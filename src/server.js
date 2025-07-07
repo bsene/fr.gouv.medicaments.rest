@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 10px;
+                // margin-bottom: 10px;
                 background: #e9ecef;
                 padding: 8px 12px;
                 border-radius: 3px;
@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
             .demo-result { 
                 background: #282c34; 
                 color: #abb2bf; 
-                padding: 10px; 
+                padding: 25px 10px 10px 10px; 
                 border-radius: 3px; 
                 overflow-x: auto; 
                 font-family: monospace; 
@@ -448,7 +448,13 @@ app.get('/', (req, res) => {
 
             async function loadExample(demoId, resultDiv) {
                 try {
-                    resultDiv.textContent = 'Chargement...';
+                    // Conserver le bouton de fermeture
+                    const closeButton = resultDiv.querySelector('.close-button');
+                    
+                    // Remplacer seulement le texte, pas le bouton
+                    const textNodes = Array.from(resultDiv.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+                    textNodes.forEach(node => node.textContent = 'Chargement...');
+                    
                     const response = await fetch(demoUrls[demoId]);
                     
                     if (!response.ok) {
@@ -457,10 +463,27 @@ app.get('/', (req, res) => {
                     
                     // Récupérer le JSON et le formater proprement
                     const jsonData = await response.json();
-                    // Utiliser innerText pour préserver les retours à la ligne
-                    resultDiv.innerText = JSON.stringify(jsonData, null, 2);
+                    
+                    // Supprimer tous les noeuds sauf le bouton
+                    Array.from(resultDiv.childNodes).forEach(node => {
+                        if (node !== closeButton) {
+                            resultDiv.removeChild(node);
+                        }
+                    });
+                    
+                    // Ajouter le JSON comme noeud texte
+                    const jsonText = document.createTextNode(JSON.stringify(jsonData, null, 2));
+                    resultDiv.appendChild(jsonText);
                 } catch (error) {
-                    resultDiv.textContent = \`Erreur: \${error.message}\`;
+                    // Garder le bouton et remplacer le reste
+                    const closeButton = resultDiv.querySelector('.close-button');
+                    Array.from(resultDiv.childNodes).forEach(node => {
+                        if (node !== closeButton) {
+                            resultDiv.removeChild(node);
+                        }
+                    });
+                    const errorText = document.createTextNode(\`Erreur: \${error.message}\`);
+                    resultDiv.appendChild(errorText);
                 }
             }
         </script>

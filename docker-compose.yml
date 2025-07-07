@@ -2,23 +2,43 @@ version: '3.8'
 
 services:
   medicaments-api:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: node:18-alpine
+    container_name: medicaments-api
     ports:
       - "3000:3000"
+    volumes:
+      - ./data:/app/data
     environment:
       - NODE_ENV=production
       - PORT=3000
-    volumes:
-      - medicaments_data:/app/data
     restart: unless-stopped
+    command: >
+      sh -c "
+        # Installation des outils nécessaires (incluant iconv pour la conversion d'encodage)
+        apk add --no-cache git curl file && 
+        
+        # Cloner le repository
+        cd /tmp &&
+        git clone https://github.com/Gizmo091/fr.gouv.medicaments.rest.git app &&
+        cd app &&
+        
+        # Installer les dépendances
+        npm install --production &&
+        
+        # Copier les données existantes si elles existent
+        if [ -d /app/data ]; then
+          cp -r /app/data/* /tmp/app/data/ 2>/dev/null || true
+        fi &&
+        
+        # Se déplacer dans le répertoire de l'app
+        cd /tmp/app &&
+        
+        # Démarrer l'application
+        npm start
+      "
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-
-volumes:
-  medicaments_data:
+      start_period: 60s

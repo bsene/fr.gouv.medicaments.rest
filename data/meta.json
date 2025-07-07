@@ -1,0 +1,47 @@
+{
+  "CIS_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:23:03.442Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_CIP_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:29:44.960Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_COMPO_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:23:03.878Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_HAS_SMR_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:29:45.119Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_HAS_ASMR_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:29:45.258Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_GENER_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:29:45.317Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_CPD_bdpm.txt": {
+    "downloadedAt": "2025-07-07T21:23:04.441Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_CIP_Dispo_Spec.txt": {
+    "downloadedAt": "2025-07-07T21:23:04.542Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  },
+  "CIS_MITM.txt": {
+    "downloadedAt": "2025-07-07T21:23:04.644Z",
+    "source": "existing",
+    "encoding": "utf-8"
+  }
+}

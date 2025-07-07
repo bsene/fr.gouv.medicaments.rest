@@ -106,9 +106,6 @@ Thumbs.db
 # Docker
 .dockerignore
 
-# Data files (keep structure but ignore downloaded content)
-data/*.txt
-!data/.gitkeep
 
 # Process management
 .pm2/

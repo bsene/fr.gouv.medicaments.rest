@@ -6,6 +6,10 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
+[![GitHub latest commit](https://badgen.net/github/last-commit/Gizmo091/fr.gouv.medicaments.rest)](https://github.com/Gizmo091/fr.gouv.medicaments.rest/commit/)
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/mathieuvedie)
+
 API REST publique pour exploiter les données de la base de données publique des médicaments du gouvernement français.
 
 ## 🌐 Démo en ligne
@@ -17,6 +21,9 @@ API REST publique pour exploiter les données de la base de données publique de
 ## Fonctionnalités
 
 - ✅ Téléchargement automatique des données (mise à jour toutes les 24h)
+- ✅ Fichiers de données inclus dans le repo (fallback si serveur indisponible)
+- ✅ Métadonnées de téléchargement stockées dans `data/meta.json`
+- ✅ Conversion automatique en UTF-8 pour tous les fichiers
 - ✅ Recherche avec wildcards (* et ?)
 - ✅ Pagination
 - ✅ API sans clé d'authentification
@@ -48,17 +55,31 @@ API REST publique pour exploiter les données de la base de données publique de
 
 ## Démarrage avec Docker
 
-```bash
-# Cloner le repo
-git clone <votre-repo>
-cd fr.gouv.medicaments.rest
+### Méthode rapide (sans cloner le repo)
 
-# Lancer avec docker-compose
+```bash
+# Télécharger uniquement le docker-compose.yml
+curl -O https://raw.githubusercontent.com/Gizmo091/fr.gouv.medicaments.rest/main/docker-compose.yml
+
+# Créer le dossier data pour persister les données
+mkdir -p data
+
+# Lancer le service (le repo sera cloné automatiquement dans le conteneur)
 docker-compose up -d
 
 # Vérifier le status
 curl http://localhost:3000/api/health
+
+# Voir les logs
+docker-compose logs -f
 ```
+
+### Notes
+
+- Le conteneur clone automatiquement la dernière version du repository depuis GitHub
+- Les données sont persistées dans le dossier `./data` local
+- L'application se met à jour automatiquement au redémarrage du conteneur
+- Aucune installation locale de Node.js n'est requise
 
 ## Développement local
 

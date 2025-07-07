@@ -29,7 +29,8 @@ function parseFile(filename, columns) {
   }
   
   try {
-    const content = fs.readFileSync(filepath, { encoding: 'latin1' });
+    // Tous les fichiers sont maintenant en UTF-8
+    const content = fs.readFileSync(filepath, { encoding: 'utf8' });
     const records = parse(content, {
       delimiter: '\t',
       columns: columns,
@@ -47,7 +48,8 @@ function parseFile(filename, columns) {
     console.warn(`Tentative de parsing ligne par ligne pour ${filename}...`);
     
     try {
-      const content = fs.readFileSync(filepath, { encoding: 'latin1' });
+      // Tous les fichiers sont maintenant en UTF-8
+      const content = fs.readFileSync(filepath, { encoding: 'utf8' });
       const lines = content.split('\n');
       const records = [];
       
