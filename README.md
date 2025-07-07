@@ -88,7 +88,6 @@ curl http://localhost:8080/api/health
 ### Notes
 
 - Le conteneur clone automatiquement la dernière version du repository depuis GitHub
-- Les données sont persistées dans le dossier `./data` local
 - L'application se met à jour automatiquement au redémarrage du conteneur
 - Aucune installation locale de Node.js n'est requise
 
