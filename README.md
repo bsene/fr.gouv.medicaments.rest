@@ -61,9 +61,6 @@ API REST publique pour exploiter les données de la base de données publique de
 # Télécharger uniquement le docker-compose.yml
 curl -O https://raw.githubusercontent.com/Gizmo091/fr.gouv.medicaments.rest/main/docker-compose.yml
 
-# Créer le dossier data pour persister les données
-mkdir -p data
-
 # Lancer le service (le repo sera cloné automatiquement dans le conteneur)
 docker-compose up -d
 
