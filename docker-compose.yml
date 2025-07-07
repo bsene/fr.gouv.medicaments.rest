@@ -5,12 +5,10 @@ services:
     image: node:18-alpine
     container_name: medicaments-api
     ports:
-      - "3000:3000"
-    volumes:
-      - ./data:/app/data
+      - "${PORT:-3000}:${PORT:-3000}"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=${PORT:-3000}
     restart: unless-stopped
     command: >
       sh -c "
@@ -37,7 +35,7 @@ services:
         npm start
       "
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: ["CMD", "sh", "-c", "wget --quiet --tries=1 --spider http://localhost:${PORT:-3000}/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -74,6 +74,20 @@ curl http://localhost:3000/api/health
 docker-compose logs -f
 ```
 
+#### Utiliser un port personnalisé
+
+```bash
+# Méthode 1 : Avec un fichier .env
+echo "PORT=8080" > .env
+docker-compose up -d
+
+# Méthode 2 : Variable d'environnement
+PORT=8080 docker-compose up -d
+
+# Vérifier sur le nouveau port
+curl http://localhost:8080/api/health
+```
+
 ### Notes
 
 - Le conteneur clone automatiquement la dernière version du repository depuis GitHub
