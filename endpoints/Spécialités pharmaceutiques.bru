@@ -1,0 +1,19 @@
+meta {
+  name: Spécialités pharmaceutiques
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:3000/api/medicaments/specialites
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.body.status: eq ok
+}
+
+settings {
+  encodeUrl: false
+}

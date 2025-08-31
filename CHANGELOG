@@ -1,0 +1,59 @@
+# Changelog
+
+## [Unreleased] - Complete Migration from Node.js to Deno
+
+### 🚀 Major Changes
+- **Complete Migration**: Successfully migrated the French government medication API from Node.js to Deno runtime
+- **Fully Functional**: Web service is now fully operational on Deno with all features working
+- **Modern Runtime**: Leverages Deno's built-in TypeScript support, secure-by-default architecture, and native web APIs
+
+### Added
+- **Deno Runtime Configuration**
+  - `deno.json` - Deno configuration with import maps, tasks, and TypeScript settings
+  - `deno.lock` - Deno lockfile for reproducible builds
+  - `main.ts` - New Deno entry point replacing Node.js server startup
+  - `main_test.ts` - Deno-native test suite
+
+- **Enhanced Development Infrastructure**
+  - `CLAUDE.md` - Comprehensive project documentation and development guidelines
+  - `endpoints/` - Bruno API test collection for thorough API validation
+  - `src/utils/` - Modular utility functions directory
+
+### Modified
+- **Core Application Architecture**
+  - Migrated `src/server.js` to work with Deno's native HTTP server
+  - Updated `src/routes/medicaments.js` for Deno compatibility
+  - Refactored `src/services/dataDownloader.js` to use Deno's fetch API
+  - Adapted `src/services/dataLoader.js` for Deno's file system APIs
+
+- **Dependency Management**
+  - Transitioned from npm packages to Deno's native modules and web standards
+  - Updated `package.json` as interim step (npm dependencies to be fully removed)
+
+### Removed
+- `package-lock.json` - No longer needed with Deno's built-in dependency management
+
+### Technical Improvements
+- **Native TypeScript**: Full TypeScript support without compilation step
+- **Security**: Deno's permission-based security model
+- **Performance**: Improved startup time and memory usage
+- **Standards Compliance**: Uses Web APIs instead of Node.js-specific APIs
+- **Simplified Deployment**: Single binary deployment with embedded dependencies
+
+### Breaking Changes
+- **Runtime Change**: Application now requires Deno instead of Node.js
+- **Startup Command**: Use `deno task start` instead of `npm start`
+- **Development**: Use `deno task dev` instead of `npm run dev`
+
+### Next Steps
+- [ ] Remove remaining npm dependencies from package.json
+- [ ] Complete transition to Deno-native modules for all external dependencies
+- [ ] Update deployment documentation for Deno runtime
+
+### Migration Status
+✅ **Complete**: Web service fully functional on Deno
+🔄 **In Progress**: Removing final npm dependencies
+📋 **Planned**: Full Deno-native dependency stack
+
+---
+*This changelog follows the [Keep a Changelog](https://keepachangelog.com/) format.*

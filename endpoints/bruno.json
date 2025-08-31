@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "fr.gouv.medicaments.rest endpoints",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

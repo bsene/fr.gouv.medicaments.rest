@@ -1,19 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { downloadDataIfNeeded } = require('./services/dataDownloader');
-const { loadData } = require('./services/dataLoader');
-const medicamentRoutes = require('./routes/medicaments');
+import express, { json } from "npm:express";
+import cors from "npm:cors";
+import { downloadDataIfNeeded } from "./services/dataDownloader.js";
+import { loadData } from "./services/dataLoader.js";
+import medicamentRoutes from "./routes/medicaments.js";
+import { getMetadata } from "./services/dataLoader.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Deno.env.get("PORT") ?? 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
-app.use('/api/medicaments', medicamentRoutes);
+app.use("/api/medicaments", medicamentRoutes);
 
-app.get('/', (req, res) => {
+app.get("/", (_, res) => {
   res.send(`
     <!DOCTYPE html>
     <html lang="fr">
@@ -49,8 +49,8 @@ app.get('/', (req, res) => {
                 padding: 8px 12px;
                 border-radius: 3px;
             }
-            .demo-url { 
-                font-family: monospace; 
+            .demo-url {
+                font-family: monospace;
                 font-size: 14px;
                 flex: 1;
                 margin-right: 10px;
@@ -61,13 +61,13 @@ app.get('/', (req, res) => {
                 color: #007bff;
                 font-family: Arial, sans-serif;
             }
-            .run-button { 
-                background: #28a745; 
-                color: white; 
-                border: none; 
-                padding: 6px 12px; 
-                border-radius: 3px; 
-                cursor: pointer; 
+            .run-button {
+                background: #28a745;
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 3px;
+                cursor: pointer;
                 font-size: 12px;
                 font-weight: bold;
             }
@@ -87,17 +87,17 @@ app.get('/', (req, res) => {
             }
             .run-button:hover { background: #218838; }
             .close-button:hover { background: rgba(0, 0, 0, 1); }
-            .demo-content { 
-                display: none; 
+            .demo-content {
+                display: none;
                 margin-top: 10px;
             }
-            .demo-result { 
-                background: #282c34; 
-                color: #abb2bf; 
-                padding: 25px 10px 10px 10px; 
-                border-radius: 3px; 
-                overflow-x: auto; 
-                font-family: monospace; 
+            .demo-result {
+                background: #282c34;
+                color: #abb2bf;
+                padding: 25px 10px 10px 10px;
+                border-radius: 3px;
+                overflow-x: auto;
+                font-family: monospace;
                 font-size: 12px;
                 max-height: 300px;
                 overflow-y: auto;
@@ -122,9 +122,9 @@ app.get('/', (req, res) => {
         </style>
         <div class="container">
             <h1>🏥 API Base de Données Publique des Médicaments</h1>
-            
+
             <p>API REST publique pour accéder aux données officielles des médicaments en France.</p>
-            
+
             <div class="attribution">
                 <strong>Attribution:</strong> Cette API utilise la <a href="http://base-donnees-publique.medicaments.gouv.fr/" target="_blank">"base de données publique des médicaments"</a> fournie par le gouvernement français.
             </div>
@@ -139,9 +139,9 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/specialites</span><br>
                 Liste des spécialités pharmaceutiques<br>
-                <strong>Paramètres:</strong> 
-                <span class="param">q</span> (recherche), 
-                <span class="param">page</span> (défaut: 1), 
+                <strong>Paramètres:</strong>
+                <span class="param">q</span> (recherche),
+                <span class="param">page</span> (défaut: 1),
                 <span class="param">limit</span> (défaut: 100),
                 <span class="param">pretty</span> (formatage JSON)
                 <div class="demo-section">
@@ -179,7 +179,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/presentations</span><br>
                 Liste des présentations (conditionnements)<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -198,7 +198,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/compositions</span><br>
                 Compositions et principes actifs<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -217,7 +217,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/avis-smr</span><br>
                 Avis SMR de la HAS<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -236,7 +236,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/avis-asmr</span><br>
                 Avis ASMR de la HAS<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -255,7 +255,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/groupes-generiques</span><br>
                 Groupes génériques<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -274,7 +274,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/conditions</span><br>
                 Conditions de prescription et délivrance<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -293,7 +293,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/disponibilite</span><br>
                 Disponibilité et ruptures d'approvisionnement<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -312,7 +312,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/interet-therapeutique-majeur</span><br>
                 Médicaments d'intérêt thérapeutique majeur (MITM)<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span>, <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -331,7 +331,7 @@ app.get('/', (req, res) => {
             <div class="endpoint">
                 <span class="method">GET</span> <span class="url">/api/medicaments/search</span><br>
                 Recherche globale dans toutes les données<br>
-                <strong>Paramètres:</strong> 
+                <strong>Paramètres:</strong>
                 <span class="param">q</span> (requis), <span class="param">page</span>, <span class="param">limit</span>, <span class="param">pretty</span>
                 <div class="demo-section">
                     <div class="demo-header">
@@ -425,7 +425,7 @@ app.get('/', (req, res) => {
                 <li><a href="http://base-donnees-publique.medicaments.gouv.fr/" target="_blank">Source officielle des données</a></li>
             </ul>
         </div>
-        
+
         <script>
             const demoUrls = {
                 'demo1': '/api/medicaments/specialites?limit=2&pretty=true',
@@ -444,12 +444,12 @@ app.get('/', (req, res) => {
             function runExample(demoId) {
                 const demoContent = document.getElementById(demoId);
                 const resultDiv = document.getElementById('result' + demoId.replace('demo', ''));
-                
+
                 // Afficher le contenu s'il est caché
                 if (demoContent.style.display === 'none' || demoContent.style.display === '') {
                     demoContent.style.display = 'block';
                 }
-                
+
                 // Charger l'exemple
                 loadExample(demoId, resultDiv);
             }
@@ -463,27 +463,27 @@ app.get('/', (req, res) => {
                 try {
                     // Conserver le bouton de fermeture
                     const closeButton = resultDiv.querySelector('.close-button');
-                    
+
                     // Remplacer seulement le texte, pas le bouton
                     const textNodes = Array.from(resultDiv.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
                     textNodes.forEach(node => node.textContent = 'Chargement...');
-                    
+
                     const response = await fetch(demoUrls[demoId]);
-                    
+
                     if (!response.ok) {
                         throw new Error(\`HTTP \${response.status}\`);
                     }
-                    
+
                     // Récupérer le JSON et le formater proprement
                     const jsonData = await response.json();
-                    
+
                     // Supprimer tous les noeuds sauf le bouton
                     Array.from(resultDiv.childNodes).forEach(node => {
                         if (node !== closeButton) {
                             resultDiv.removeChild(node);
                         }
                     });
-                    
+
                     // Ajouter le JSON comme noeud texte
                     const jsonText = document.createTextNode(JSON.stringify(jsonData, null, 2));
                     resultDiv.appendChild(jsonText);
@@ -505,23 +505,22 @@ app.get('/', (req, res) => {
   `);
 });
 
-app.get('/api/health', (req, res) => {
-  const { getMetadata } = require('./services/dataLoader');
+app.get("/api/health", (req, res) => {
   const metadata = getMetadata();
   const { pretty } = req.query;
-  
-  const responseData = { 
-    status: 'ok', 
-    message: 'API des médicaments française',
-    attribution: 'base de données publique des médicaments - gouv.fr',
+
+  const responseData = {
+    status: "ok",
+    message: "API des médicaments française",
+    attribution: "base de données publique des médicaments - gouv.fr",
     metadata: {
       last_updated: metadata.last_updated,
-      source: metadata.source
-    }
+      source: metadata.source,
+    },
   };
 
-  if (pretty === 'true' || pretty === '1') {
-    res.set('Content-Type', 'application/json; charset=utf-8');
+  if (pretty === "true" || pretty === "1") {
+    res.set("Content-Type", "application/json; charset=utf-8");
     res.send(JSON.stringify(responseData, null, 2));
   } else {
     res.json(responseData);
@@ -530,19 +529,19 @@ app.get('/api/health', (req, res) => {
 
 async function startServer() {
   try {
-    console.log('Vérification et téléchargement des données...');
+    console.log("Vérification et téléchargement des données...");
     await downloadDataIfNeeded();
-    
-    console.log('Chargement des données en mémoire...');
+
+    console.log("Chargement des données en mémoire...");
     await loadData();
-    
+
     app.listen(PORT, () => {
       console.log(`Serveur démarré sur le port ${PORT}`);
       console.log(`Health check: http://localhost:${PORT}/api/health`);
     });
   } catch (error) {
-    console.error('Erreur au démarrage:', error);
-    process.exit(1);
+    console.error("Erreur au démarrage:", error);
+    Deno.exit(1);
   }
 }
 

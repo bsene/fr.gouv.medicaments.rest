@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "dev": "deno run --watch -A src/server.js",
+    "start": "deno run src/server.js",
+    "download-data": "deno run src/scripts/download-initial-data.js"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
